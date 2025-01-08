@@ -1,35 +1,58 @@
 pipeline {
     agent any
+
+    environment {
+        MAVEN_HOME = tool name: 'Maven', type: 'Tool'  // Укажите название инструмента Maven
+        JAVA_HOME = tool name: 'JDK', type: 'Tool'    // Укажите название JDK
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building...'
+                checkout scm
             }
         }
-        stage('Test') {
+
+        stage('Install Dependencies') {
             steps {
-                echo 'Running tests...'
+                script {
+                    // Устанавливаем зависимости
+                    sh "'${MAVEN_HOME}/bin/mvn' clean install"
+                }
             }
         }
-        stage('Deploy') {
+
+        stage('Run API Tests') {
             steps {
-                echo 'Deploying...'
+                script {
+                    // Запуск тестов API с использованием Maven
+                    sh "'${MAVEN_HOME}/bin/mvn' clean test -Dtest=com.yourpackage.*"
+                }
             }
         }
-        stage('Allure Report') {
+
+        stage('Generate Allure Report') {
             steps {
-                echo 'Generating Allure Report...'
-                allure([
-                        results: [[path: 'target/allure-results']],
-                        reportBuildPolicy: 'ALWAYS'
-                ])
+                script {
+                    // Генерация отчета Allure
+                    sh "'${MAVEN_HOME}/bin/mvn' allure:serve"
+                }
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished.'
+            // Завершающие действия (например, очистка ресурсов)
+            cleanWs()
+        }
+
+        success {
+            echo 'Pipeline успешно завершен!'
+        }
+
+        failure {
+            echo 'Процесс завершился с ошибкой.'
         }
     }
 }
