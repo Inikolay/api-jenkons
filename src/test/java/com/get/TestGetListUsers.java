@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static com.specifications.Specifications.specForGet;
 import static io.restassured.RestAssured.given;
 
-public class TestGet {
+public class TestGetListUsers {
 
     @Test
     public void testGet(){
@@ -14,7 +14,7 @@ public class TestGet {
                 .spec(specForGet())
                 .when()
                 .log().all()
-                .get()
+                .get("/users?page=2")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.SC_OK);
