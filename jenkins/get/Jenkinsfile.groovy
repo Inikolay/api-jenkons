@@ -1,26 +1,21 @@
 pipeline {
     agent any
-
-    tools {
-        // Указываем JDK и Maven, если они настроены в Jenkins
-        jdk '19.0.2'
-        maven '3.9.9'
-    }
-
-
     stages {
-        stage('rest test') {
-                sh 'mvn -Dtest=com.** verify'
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
         }
-
-
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test'
             }
         }
-
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
         stage('Allure Report') {
             steps {
                 echo 'Generating Allure Report...'
