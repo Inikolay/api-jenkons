@@ -1,4 +1,4 @@
-package get;
+package com.get;
 
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
