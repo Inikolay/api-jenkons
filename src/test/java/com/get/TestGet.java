@@ -1,4 +1,4 @@
-package get;
+package com.get;
 
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 public class TestGet {
 
     @Test
-
     public void testGet(){
         given()
                 .spec(specForGet())
@@ -18,7 +17,6 @@ public class TestGet {
                 .get()
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().response();
+                .statusCode(HttpStatus.SC_OK);
     }
 }

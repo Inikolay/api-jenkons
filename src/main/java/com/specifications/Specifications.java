@@ -8,7 +8,7 @@ import io.restassured.specification.RequestSpecification;
 public class Specifications {
     public static RequestSpecification specForGet() {
         return new RequestSpecBuilder()
-                .setBaseUri("")
+                .setBaseUri("https://reqres.in/api/users?page=2")
                 .setContentType(ContentType.JSON)
                 .setAccept("application/json")
                 .addHeader("User-Agent", "BSK_API_TESTS")
