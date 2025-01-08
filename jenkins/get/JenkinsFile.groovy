@@ -7,26 +7,22 @@ pipeline {
         maven '3.9.9'
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/nikolay']],
-                        userRemoteConfigs: [[
-                                                    url: 'git@github.com:Inikolay/api-jenkons.git',
-                                                    credentialsId: 'jenkins'
-                                            ]]
-                ])
-            }
-        }
+    parameters{
+        booleanParams(defoultValue: true, description 'run teat set', name: "get")
+    }
 
-        stage('Build') {
+    stages {
+        stage('rest test') {
             steps {
-                echo 'Building the project...'
+                when {
+                    expression{
+                        return param.rest
+                    }
+                }
                 sh 'mvn -Dtest=com.** verify'
             }
         }
+
 
         stage('Test') {
             steps {
